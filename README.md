@@ -44,7 +44,6 @@ I wanted to build something that feels close to what business analysts actually 
 
 ---
 
-## 📦 Folder Structure
 
 
 
