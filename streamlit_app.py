@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 import openai
 
-# Load API key
+# Load API key from .env file
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -14,12 +14,13 @@ def load_data():
 
 df = load_data()
 
-# Sidebar filters
+# Sidebar filter
 st.sidebar.header("Filter Data")
-region = st.sidebar.selectbox("Select Region", ["All"] + sorted(df["Region"].unique().tolist()))
+region = st.sidebar.selectbox("Select Region", ["All"] + sorted(df["Region"].unique()))
 if region != "All":
     df = df[df["Region"] == region]
 
+# KPI calculation
 def calculate_kpis(df):
     total_sales = df['Sales'].sum()
     total_profit = df['Profit'].sum()
@@ -34,6 +35,7 @@ def calculate_kpis(df):
         "Avg Order Value": round(avg_order_value, 2)
     }
 
+# GPT insight generator
 def generate_insight(kpis, question):
     kpi_text = "\n".join([f"{k}: {v}" for k, v in kpis.items()])
     try:
@@ -49,12 +51,13 @@ def generate_insight(kpis, question):
     except Exception as e:
         return f"OpenAI Error: {e}"
 
-# Main UI
+# App layout
 st.title("F-Analytics – Executive Dashboard")
 st.markdown("**Data Source:** Kaggle Superstore | **AI-Powered Analysis** with GPT-4")
 
 kpis = calculate_kpis(df)
 
+# KPI Display
 st.subheader("📊 Key Performance Indicators")
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Sales", f"${kpis['Total Sales']:,.2f}")
@@ -70,9 +73,9 @@ st.subheader("📈 Sales by Category")
 category_sales = df.groupby("Category")["Sales"].sum().sort_values()
 st.bar_chart(category_sales)
 
-# GPT Insight section
+# GPT prompt input
 st.subheader("🧠 Ask GPT About the KPIs")
-custom_question = st.text_input("Enter your business question:", 
+custom_question = st.text_input("Enter your business question:",
     value="Give me an executive insight about recent performance based on these KPIs.")
 
 if st.button("Generate Insight"):
