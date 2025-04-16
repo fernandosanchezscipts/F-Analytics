@@ -14,6 +14,12 @@ def load_data():
 
 df = load_data()
 
+# Sidebar filters
+st.sidebar.header("Filter Data")
+region = st.sidebar.selectbox("Select Region", ["All"] + sorted(df["Region"].unique().tolist()))
+if region != "All":
+    df = df[df["Region"] == region]
+
 def calculate_kpis(df):
     total_sales = df['Sales'].sum()
     total_profit = df['Profit'].sum()
@@ -28,14 +34,14 @@ def calculate_kpis(df):
         "Avg Order Value": round(avg_order_value, 2)
     }
 
-def generate_insight(kpis):
+def generate_insight(kpis, question):
     kpi_text = "\n".join([f"{k}: {v}" for k, v in kpis.items()])
     try:
         response = openai.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": f"You are a business analyst assistant. Here are the KPIs:\n{kpi_text}"},
-                {"role": "user", "content": "Give me an executive insight about recent performance based on these KPIs."}
+                {"role": "user", "content": question}
             ],
             max_tokens=300
         )
@@ -43,13 +49,13 @@ def generate_insight(kpis):
     except Exception as e:
         return f"OpenAI Error: {e}"
 
-# Streamlit UI
-st.title("F-Analytics - Executive Dashboard")
-st.markdown("KPI insights powered by GPT-4 and real retail data")
+# Main UI
+st.title("F-Analytics – Executive Dashboard")
+st.markdown("**Data Source:** Kaggle Superstore | **AI-Powered Analysis** with GPT-4")
 
 kpis = calculate_kpis(df)
 
-st.subheader("Key Performance Indicators")
+st.subheader("📊 Key Performance Indicators")
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Sales", f"${kpis['Total Sales']:,.2f}")
 col2.metric("Total Profit", f"${kpis['Total Profit']:,.2f}")
@@ -59,11 +65,19 @@ col4, col5 = st.columns(2)
 col4.metric("Total Orders", kpis["Total Orders"])
 col5.metric("Total Customers", kpis["Total Customers"])
 
-st.subheader("GPT Business Insight")
+# Sales by category chart
+st.subheader("📈 Sales by Category")
+category_sales = df.groupby("Category")["Sales"].sum().sort_values()
+st.bar_chart(category_sales)
+
+# GPT Insight section
+st.subheader("🧠 Ask GPT About the KPIs")
+custom_question = st.text_input("Enter your business question:", 
+    value="Give me an executive insight about recent performance based on these KPIs.")
+
 if st.button("Generate Insight"):
-    with st.spinner("Analyzing KPIs with GPT..."):
-        insight = generate_insight(kpis)
+    with st.spinner("Analyzing data with GPT..."):
+        insight = generate_insight(kpis, custom_question)
         st.success("Insight Generated:")
         st.write(insight)
         
-    
