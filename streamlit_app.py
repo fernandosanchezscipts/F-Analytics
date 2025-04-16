@@ -8,25 +8,6 @@ import openai
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# --- LOGIN PAGE ---
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-def show_login():
-    st.title("F-Analytics Login")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        if username and password:
-            st.session_state.logged_in = True
-        else:
-            st.warning("Please enter both username and password.")
-
-if not st.session_state.logged_in:
-    show_login()
-    st.stop()
-
-# --- MAIN DASHBOARD ---
 @st.cache_data
 def load_data():
     return pd.read_csv("data/Sample - Superstore.csv", encoding="ISO-8859-1")
@@ -102,4 +83,3 @@ if st.button("Generate Insight"):
         insight = generate_insight(kpis, custom_question)
         st.success("Insight Generated:")
         st.write(insight)
-        
