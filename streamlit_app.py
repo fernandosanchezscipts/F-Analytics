@@ -73,6 +73,21 @@ st.subheader("📈 Sales by Category")
 category_sales = df.groupby("Category")["Sales"].sum().sort_values()
 st.bar_chart(category_sales)
 
+# Trendline chart: Sales & Profit Over Time
+st.subheader("📉 Sales and Profit Over Time")
+
+# Ensure Order Date is datetime
+df["Order Date"] = pd.to_datetime(df["Order Date"])
+
+# Group by month and aggregate
+df_trend = df.groupby(pd.Grouper(key="Order Date", freq="M")).agg({
+    "Sales": "sum",
+    "Profit": "sum"
+}).reset_index()
+
+# Plot trendline chart
+st.line_chart(df_trend.set_index("Order Date"))
+
 # GPT prompt input
 st.subheader("🧠 Ask GPT About the KPIs")
 custom_question = st.text_input("Enter your business question:",
@@ -83,3 +98,4 @@ if st.button("Generate Insight"):
         insight = generate_insight(kpis, custom_question)
         st.success("Insight Generated:")
         st.write(insight)
+        
