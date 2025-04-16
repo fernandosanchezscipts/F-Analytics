@@ -4,50 +4,48 @@
 
 # F-Analytics – Executive Dashboard & Decision Intelligence System
 
-**F-Analytics** is a smart business analytics tool built with Python, Streamlit, and GPT-4, designed to:
-- Extract and visualize KPIs from real-world retail data
-- Analyze performance (Sales, Profit, Orders, Customers, etc.)
-- Generate executive-level insights using GPT-4
-- Empower decision-makers with instant exports and trend analysis
+F-Analytics is a personal project I built to sharpen my skills in business analysis and data storytelling. It’s a live dashboard that pulls insights from real retail data and uses GPT-4 to generate high-level summaries based on the KPIs.
 
-> **Live Demo:** [Click here to try it](https://fernandosanchezscipts-f-analytics-streamlit-app-vfq1vf.streamlit.app)
+> [🎯 Try the app here](https://fernandosanchezscipts-f-analytics-streamlit-app-vfq1vf.streamlit.app)
 
 ---
 
 ## 🚀 Features
 
-- **KPI Calculation** – Total Sales, Profit, Orders, Customers, and Avg Order Value
-- **Sales by Category** – Bar chart of sales distribution across product categories
-- **Trend Analysis** – Line chart showing Sales & Profit over time
-- **GPT-4 Insights** – Generates business summaries based on your actual KPIs
-- **Export Buttons** – Download KPI summary as CSV and GPT insight as text
-- **Interactive Region Filter** – Analyze performance by region from the sidebar
+- **Key Metrics** – Instantly shows Sales, Profit, Orders, Customers, and Avg Order Value
+- **Sales Breakdown** – Bar chart showing sales by product category
+- **Monthly Trends** – Line chart tracking Sales & Profit over time
+- **GPT-4 Insights** – AI-generated summaries based on live data
+- **Custom Prompts** – Ask your own questions about performance
+- **Export Options** – Download KPI summary as CSV and GPT insight as TXT
+- **Region Filter** – Filter everything by region in the sidebar
 
 ---
 
-## 🧠 AI-Powered KPI Prompting
+## 🧠 Why I Built It
 
-Using OpenAI’s GPT-4, the app takes your KPI metrics and returns a real-time executive insight that adapts to the actual data shown — making your analysis intelligent, quick, and presentation-ready.
+I wanted to build something that feels close to what business analysts actually use in the real world. The goal was to combine automation (GPT), data analysis (Pandas), and clean presentation (Streamlit) into one tool that could help people make smarter decisions — fast.
 
 ---
 
 ## 📁 Dataset
 
-- Source: [Kaggle Superstore Dataset](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
+- Pulled from [Kaggle: Superstore Dataset](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tech Used
 
 - Python 3.10  
 - Streamlit  
 - Pandas  
-- OpenAI (GPT-4)  
-- dotenv
+- OpenAI (GPT-4 via API)  
+- dotenv for API keys
 
 ---
 
 ## 📦 Folder Structure
+
 
 
 
