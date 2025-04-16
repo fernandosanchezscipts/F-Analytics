@@ -3,6 +3,8 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 import openai
+import io
+from datetime import datetime
 
 # Load API key from .env file
 load_dotenv()
@@ -75,17 +77,11 @@ st.bar_chart(category_sales)
 
 # Trendline chart: Sales & Profit Over Time
 st.subheader("📉 Sales and Profit Over Time")
-
-# Ensure Order Date is datetime
 df["Order Date"] = pd.to_datetime(df["Order Date"])
-
-# Group by month and aggregate
 df_trend = df.groupby(pd.Grouper(key="Order Date", freq="M")).agg({
     "Sales": "sum",
     "Profit": "sum"
 }).reset_index()
-
-# Plot trendline chart
 st.line_chart(df_trend.set_index("Order Date"))
 
 # GPT prompt input
@@ -98,4 +94,30 @@ if st.button("Generate Insight"):
         insight = generate_insight(kpis, custom_question)
         st.success("Insight Generated:")
         st.write(insight)
-        
+else:
+    insight = ""
+
+# Export options
+st.subheader("📤 Export")
+
+# Export KPI Summary as CSV
+kpi_df = pd.DataFrame.from_dict(kpis, orient="index", columns=["Value"])
+kpi_csv = kpi_df.to_csv().encode("utf-8")
+
+st.download_button(
+    label="Download KPI Summary as CSV",
+    data=kpi_csv,
+    file_name=f"kpi_summary_{datetime.now().strftime('%Y%m%d')}.csv",
+    mime="text/csv"
+)
+
+# Export GPT Insight as TXT
+if insight:
+    insight_bytes = insight.encode("utf-8")
+    st.download_button(
+        label="Download GPT Insight as Text",
+        data=insight_bytes,
+        file_name=f"gpt_insight_{datetime.now().strftime('%Y%m%d')}.txt",
+        mime="text/plain"
+    )
+    
