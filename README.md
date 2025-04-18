@@ -42,6 +42,7 @@ I wanted to build something that feels close to what business analysts actually 
 - OpenAI (GPT-4 via API)  
 - dotenv for API keys
 
+
 ---
 
 
